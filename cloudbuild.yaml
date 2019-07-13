@@ -3,13 +3,9 @@ steps:
   volumes:
   - name: 'vol1'
     path: '/persistent_volume'
-  entrypoint: 'bash'
-  args:
-  - '-c'
-  - |
-        echo "Hello, world!" > /persistent_volume/file
+  args: ['cp', '-a', '.', '/persistent_volume']
 - name: 'gcr.io/cloud-builders/docker'
   volumes:
   - name: 'vol1'
     path: '/persistent_volume'
-  args: ['run', '-v', 'vol1:/data', 'alpine', 'cat', 'data/file']
+  args: ['run', '-v', 'vol1:/data', 'alpine', 'cat', 'data/cloudbuild.yaml']
