@@ -10,4 +10,4 @@ steps:
   volumes:
   - name: 'vol1'
     path: '/persistent_volume'
-  args: ['run', '-v', 'vol1:/home/app', 'gcr.io/fullstackgcp/gradle', 'cat', '/home/app/cloudbuild.yaml']
+  args: ['run', '-v', 'vol1:/home/app', 'gcr.io/fullstackgcp/gradle', '/bin/bash', '-c' '"cd /home/app && ./gradlew clean assembleDebug"']
