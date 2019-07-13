@@ -10,7 +10,7 @@ steps:
   volumes:
   - name: 'vol'
     path: '/persistent_volume'
-  args: ["run", "-v", "/persistent_volume:/home/app", "--rm", "gcr.io/fullstackgcp/gradle", "/bin/bash", "-c", "'cd /home/app && ./gradlew clean assembleDebug'"]
+  args: ["run", "-v", "/vol:/home/app", "--rm", "gcr.io/fullstackgcp/gradle", "/bin/bash", "-c", "'cd /home/app && ./gradlew clean assembleDebug'"]
   # Push the APK Output to our GCS Bucket
 - name: "gcr.io/cloud-builders/gsutil"
   volumes:
