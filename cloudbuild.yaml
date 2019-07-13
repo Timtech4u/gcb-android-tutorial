@@ -1,20 +1,15 @@
 steps:
-  # Set a persistent volume according to https://cloud.google.com/cloud-build/docs/build-config (search for volumes)
 - name: 'ubuntu'
   volumes:
-  - name: 'vol'
+  - name: 'vol1'
     path: '/persistent_volume'
-  args: ['cp', '-a', '.', '/persistent_volume']
-  # Build APK with Gradle Image from mounted /persistent_volume
-- name: "gcr.io/cloud-builders/docker"
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+        echo "Hello, world!" > /persistent_volume/file
+- name: 'gcr.io/cloud-builders/docker'
   volumes:
-  - name: 'vol'
+  - name: 'vol1'
     path: '/persistent_volume'
-  args: ["run", "-v", "/vol:/home/app", "--rm", "gcr.io/fullstackgcp/gradle", "/bin/bash", "-c", "ls -la"]
-  # Push the APK Output to our GCS Bucket
-- name: "gcr.io/cloud-builders/gsutil"
-  volumes:
-  - name: 'vol'
-    path: '/persistent_volume'
-  args: ['cp', '/persistent_volume/app/build/outputs/apk/debug/app-debug.apk', 'gs://fullstackgcp-apk-builds/app-debug-$SHORT_SHA.apk']
-timeout: 1200s
+  args: ['run', '-v', 'vol1:/data', 'alpine', 'cat', 'data/file']
