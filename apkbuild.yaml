@@ -1,0 +1,8 @@
+steps:
+# Build APK with Gradle Image and Save Artifacts
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['run', '-v', 'vol1:/home/app', '--rm', 'gcr.io/fullstackgcp/gradle', '/bin/sh', '-c', 'cd /home/app && ./gradlew clean assembleDebug']
+artifacts:
+  objects:
+    location: 'gs://[STORAGE_LOCATION]/'
+    paths: ['*.apk']
